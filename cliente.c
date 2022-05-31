@@ -14,8 +14,8 @@
 #define MAXDATASIZE 300
 
 int main(int argc, char *argv[]){
-  int sockfd, numbytes;
-  char buf[MAXDATASIZE],bufsalida[MAXDATASIZE];
+  int sockfd, numbytes,new_fd;
+  char buf[MAXDATASIZE],bufentrada[MAXDATASIZE];
   struct hostent *he;
 
 while(1){
@@ -74,12 +74,29 @@ while(1){
     	  if(send(sockfd, buf, MAXDATASIZE, 0) == -1)
     		perror("Server-send() error lol!");
   	else
-    		buf[strcspn(buf, "\n")] = 1;//se hace para eliminar el \n de fgets
     	printf("Server-send is OK...!\n");
+    	
+//-----------------    	
+    	if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
+    
+      perror("recv()");
+      exit(1);
+    }
+    else
+      printf("Servidor-The recv() is OK...\n");
+	
+    buf[numbytes] = '\0';
+    printf("Servidor-Received: %s\n", buf);
+    
 
+   
+    	
+    	
+//-----------------
 
   	printf("Client-Closing sockfd\n");
   	close(sockfd);
+    
     
     }
 

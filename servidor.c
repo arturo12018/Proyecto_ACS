@@ -74,14 +74,22 @@ int main(int argc, char *argv[ ]){
     printf("Server: Got connection from %s\n", inet_ntoa(their_addr.sin_addr));
 
     if((numbytes = recv(new_fd, buf, MAXDATASIZE-1, 0)) == -1){
+    
       perror("recv()");
       exit(1);
     }
     else
       printf("Servidor-The recv() is OK...\n");
-
+	
     buf[numbytes] = '\0';
     printf("Servidor-Received: %s\n", buf);
+    
+    //-----
+    if(send(new_fd, buf, MAXDATASIZE, 0) == -1)
+    		perror("Server-send() error lol!");
+  	else
+    	printf("Server-send is OK...!\n");
+    //---
 
     close(new_fd);
     printf("Server-new socket, new_fd closed successfully...\n");
@@ -89,3 +97,5 @@ int main(int argc, char *argv[ ]){
   close(sockfd);
   return 0;
 }
+
+

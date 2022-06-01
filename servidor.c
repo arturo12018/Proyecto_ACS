@@ -8,12 +8,17 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
+#include <time.h>
 
 /* the port users will be connecting to */
-#define MYPORT 3490
+#define MYPORT 8000
 
 /* how many pending connections queue will hold */
 #define BACKLOG 10
+
+void date(int new_fd);
+void pwd(int new_fd);
+
 
 int main(int argc, char *argv[ ]){
   /* listen on sock_fd, new connection on new_fd */
@@ -83,13 +88,23 @@ int main(int argc, char *argv[ ]){
 	
     buf[numbytes] = '\0';
     printf("Servidor-Received: %s\n", buf);
+   
+    //comandos
+    if(strcmp(buf, "date") == 0)
+    	date(new_fd);
+    		
+    		
+    if(strcmp(buf, "pwd") == 0)
+    	pwd(new_fd);
     
-    //-----
-    if(send(new_fd, buf, MAXDATASIZE, 0) == -1)
+    else{
+    if(send(new_fd, "Error comando", MAXDATASIZE, 0) == -1)
     		perror("Server-send() error lol!");
-  	else
-    	printf("Server-send is OK...!\n");
+  	//else
+    	//printf("Server-send is OK...!\n");
     //---
+
+	}
 
     close(new_fd);
     printf("Server-new socket, new_fd closed successfully...\n");
@@ -99,3 +114,29 @@ int main(int argc, char *argv[ ]){
 }
 
 
+void date(int new_fd){
+time_t current_time;
+	    char* c_time_string;
+
+	    /* Obtain current time. */
+	    current_time = time(NULL);
+
+	    if (current_time == ((time_t)-1))
+	    {
+		(void) fprintf(stderr, "Failure to obtain the current time.\n");
+		exit(EXIT_FAILURE);
+	    }
+
+	    /* Convert to local time format. */
+	    c_time_string = ctime(&current_time);
+    	   send(new_fd, c_time_string, 300, 0);
+}
+
+
+void pwd(int new_fd){
+    char path[300];
+    getcwd(path, 300);
+    //printf("Current working directory: %s\n", path);
+     send(new_fd, path, 300, 0);
+
+}

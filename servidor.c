@@ -18,6 +18,7 @@
 
 void date(int new_fd);
 void pwd(int new_fd);
+void whoami(int new_fd);
 
 
 int main(int argc, char *argv[ ]){
@@ -96,6 +97,10 @@ int main(int argc, char *argv[ ]){
     		
     if(strcmp(buf, "pwd") == 0)
     	pwd(new_fd);
+    	
+    if(strcmp(buf, "whoami") == 0)
+    	whoami(new_fd);
+    	
     
     else{
     if(send(new_fd, "Error comando", MAXDATASIZE, 0) == -1)
@@ -138,5 +143,16 @@ void pwd(int new_fd){
     getcwd(path, 300);
     //printf("Current working directory: %s\n", path);
      send(new_fd, path, 300, 0);
+
+}
+
+
+
+void whoami(int new_fd){
+	char *buf;
+	buf=(char *)malloc(10*sizeof(char));
+	buf=getlogin();
+	//printf("\n %s \n",buf);
+	send(new_fd, buf, 300, 0);
 
 }

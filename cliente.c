@@ -9,12 +9,12 @@
 #include <sys/socket.h>
 
 // the port client will be connecting to
-#define PORT 3490
+#define PORT 8000
 // max number of bytes we can get at once
 #define MAXDATASIZE 300
 
 int main(int argc, char *argv[]){
-  int sockfd, numbytes,new_fd;
+  int sockfd, numbytes,new_fd,conectado=0;
   char buf[MAXDATASIZE],bufentrada[MAXDATASIZE];
   struct hostent *he;
 
@@ -23,7 +23,7 @@ while(1){
   struct sockaddr_in their_addr;
   // if no command line argument supplied
   if(argc != 2){
-    fprintf(stderr, "Client-Usage: %s host_servidor\n", argv[0]);
+    //fprintf(stderr, "Client-Usage: %s host_servidor\n", argv[0]);
 
     // just exit
     exit(1);
@@ -35,19 +35,19 @@ while(1){
     exit(1);
   }
   else
-    printf("Client-The remote host is: %s\n", argv[1]);
+    //printf("Client-The remote host is: %s\n", argv[1]);
 
   if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
     perror("socket()");
     exit(1);
   }
   else 
-    printf("Client-The socket() sockfd is OK...\n");
+    //printf("Client-The socket() sockfd is OK...\n");
 
   // host byte order
   their_addr.sin_family = AF_INET;
   // short, network byte order
-  printf("Server-Using %s and port %d...\n", argv[1], PORT);
+  //printf("Server-Using %s and port %d...\n", argv[1], PORT);
   their_addr.sin_port = htons(PORT);
   their_addr.sin_addr = *((struct in_addr *)he->h_addr);
 
@@ -58,7 +58,9 @@ while(1){
     exit(1);
   }
   else
-    printf("Client-The connect() is OK...\n");
+  
+    if(conectado==0)
+    	printf("Client-The connect() is OK...\n");
     
     printf("> "), fgets(buf, MAXDATASIZE, stdin);
     
@@ -74,7 +76,7 @@ while(1){
     	  if(send(sockfd, buf, MAXDATASIZE, 0) == -1)
     		perror("Server-send() error lol!");
   	else
-    	printf("Server-send is OK...!\n");
+    	//printf("Server-send is OK...!\n");
     	
 //-----------------    	
     	if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
@@ -83,10 +85,10 @@ while(1){
       exit(1);
     }
     else
-      printf("Servidor-The recv() is OK...\n");
+      //printf("Servidor-The recv() is OK...\n");
 	
     buf[numbytes] = '\0';
-    printf("Servidor-Received: %s\n", buf);
+    printf("%s\n", buf);
     
 
    
@@ -94,9 +96,9 @@ while(1){
     	
 //-----------------
 
-  	printf("Client-Closing sockfd\n");
+  	//printf("Client-Closing sockfd\n");
   	close(sockfd);
-    
+    	conectado=1;
     
     }
 

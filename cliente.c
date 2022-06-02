@@ -75,27 +75,24 @@ while(1){
     else{
     	  if(send(sockfd, buf, MAXDATASIZE, 0) == -1)
     		perror("Server-send() error lol!");
-  	else
-    	//printf("Server-send is OK...!\n");
+  	
     	
-//-----------------    	
-    	if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
-    
-      perror("recv()");
-      exit(1);
+//-----------------    
+
+ while((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) != -1) {	
+     buf[numbytes] = '\0';
+    printf("%s", buf);
     }
-    else
-      //printf("Servidor-The recv() is OK...\n");
+ 
 	
-    buf[numbytes] = '\0';
-    printf("%s\n", buf);
+    
     
 
    
     	
     	
 //-----------------
-
+	
   	//printf("Client-Closing sockfd\n");
   	close(sockfd);
     	conectado=1;

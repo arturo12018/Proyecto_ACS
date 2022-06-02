@@ -16,9 +16,7 @@
 /* how many pending connections queue will hold */
 #define BACKLOG 10
 
-void date(int new_fd);
-void pwd(int new_fd);
-void whoami(int new_fd);
+
 
 
 int main(int argc, char *argv[ ]){
@@ -88,71 +86,50 @@ int main(int argc, char *argv[ ]){
       printf("Servidor-The recv() is OK...\n");
 	
     buf[numbytes] = '\0';
-    printf("Servidor-Received: %s\n", buf);
+    printf("Servidor-Received: %s \n", buf);
    
-    //comandos
-    if(strcmp(buf, "date") == 0)
-    	date(new_fd);
-    		
-    		
-    if(strcmp(buf, "pwd") == 0)
-    	pwd(new_fd);
-    	
-    if(strcmp(buf, "whoami") == 0)
-    	whoami(new_fd);
-    	
-    
-    else{
-    if(send(new_fd, "Error comando", MAXDATASIZE, 0) == -1)
-    		perror("Server-send() error lol!");
-  	//else
-    	//printf("Server-send is OK...!\n");
-    //---
+	
+	
+//----------------------------------
 
-	}
+//Guarda enb un archivo la cadena que salio
+char path[300];
+FILE *fp;
+FILE *pf;
+
+
+
+
+fp = popen(buf, "r");
+
+	
+//Guardamos los datos en el archivo
+while (fgets(buf, 300, fp) != NULL){
+printf("%s",buf);
+send(new_fd, buf, strlen(buf), 0);
+}
+	
+pclose(fp);
+
+
+//------------------------	
+	
+	
+	
+	
+
+    /*
+    if(send(new_fd, buf, strlen(buf), 0) == -1)
+    		perror("Server-send() error lol!");
+    */
+
 
     close(new_fd);
     printf("Server-new socket, new_fd closed successfully...\n");
+    
   }
   close(sockfd);
   return 0;
 }
 
 
-void date(int new_fd){
-time_t current_time;
-	    char* c_time_string;
-
-	    /* Obtain current time. */
-	    current_time = time(NULL);
-
-	    if (current_time == ((time_t)-1))
-	    {
-		(void) fprintf(stderr, "Failure to obtain the current time.\n");
-		exit(EXIT_FAILURE);
-	    }
-
-	    /* Convert to local time format. */
-	    c_time_string = ctime(&current_time);
-    	   send(new_fd, c_time_string, 300, 0);
-}
-
-
-void pwd(int new_fd){
-    char path[300];
-    getcwd(path, 300);
-    //printf("Current working directory: %s\n", path);
-     send(new_fd, path, 300, 0);
-
-}
-
-
-
-void whoami(int new_fd){
-	char *buf;
-	buf=(char *)malloc(10*sizeof(char));
-	buf=getlogin();
-	//printf("\n %s \n",buf);
-	send(new_fd, buf, 300, 0);
-
-}

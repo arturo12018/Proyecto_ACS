@@ -15,7 +15,7 @@
 
 int main(int argc, char *argv[]){
   int sockfd, numbytes,new_fd,conectado=0;
-  char buf[MAXDATASIZE],bufentrada[MAXDATASIZE];
+  char buf[MAXDATASIZE];
   struct hostent *he;
 
 while(1){
@@ -60,7 +60,7 @@ while(1){
   else
   
     if(conectado==0)
-    	printf("Client-The connect() is OK...\n");
+    	printf("Client-The connect() is OK...\n\n");
     
     printf("> "), fgets(buf, MAXDATASIZE, stdin);
     
@@ -79,14 +79,20 @@ while(1){
     	
 //-----------------    
 
- while((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) != -1) {	
-     buf[numbytes] = '\0';
-    printf("%s", buf);
+
+    
+    
+    if((numbytes = recv(sockfd, buf, 1000-1, 0)) == -1){
+    
+      perror("recv()");
+      
     }
- 
+   
 	
-    
-    
+    buf[numbytes] = '\0';
+    printf("Servidor-Received: %s \n", buf);
+   
+	printf("\n");
 
    
     	

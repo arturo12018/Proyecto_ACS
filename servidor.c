@@ -88,40 +88,64 @@ int main(int argc, char *argv[ ]){
     buf[numbytes] = '\0';
     printf("Servidor-Received: %s \n", buf);
    
-	
+	printf("\n");
 	
 //----------------------------------
 
-//Guarda enb un archivo la cadena que salio
+
+//char buf[300];
 char path[300];
+char cadena[1000];
 FILE *fp;
 FILE *pf;
 
 
 
+//fgets(buf, 300, stdin);
+
 
 fp = popen(buf, "r");
 
 	
-//Guardamos los datos en el archivo
-while (fgets(buf, 300, fp) != NULL){
-printf("%s",buf);
-send(new_fd, buf, strlen(buf), 0);
-}
+
+memset(cadena, '\0', strlen(cadena));//Limpia la cadena
+
 	
+//Guarda los datos en el archivo
+if (!(pf=fopen("comando.txt","w"))) /* controlamos si se produce un error */
+{
+	printf("Error al abrir el fichero");
+	exit(0); /* abandonamos el programa */
+}
+else 
+{
+	//Guardamos los datos en el archivo
+	while (fgets(path, 300, fp) != NULL)
+	fputs(path,pf);
+	fclose(pf);
+}
 pclose(fp);
 
+
+
+  FILE * stream;
+  stream = fopen("comando.txt", "r");
+  int count = fread(cadena, sizeof(char), 1000, stream);
+  fclose(stream);
+  //Imprime
+  printf(" %s \n", cadena);
+  
+  
+if(send(new_fd, cadena, strlen(cadena), 0)==-1)
+	printf("Error\n");
+else
+	printf("Enviado\n");
 
 //------------------------	
 	
 	
 	
-	
 
-    /*
-    if(send(new_fd, buf, strlen(buf), 0) == -1)
-    		perror("Server-send() error lol!");
-    */
 
 
     close(new_fd);

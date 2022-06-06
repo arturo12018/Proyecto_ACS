@@ -103,7 +103,7 @@ FILE *pf;
 
 //fgets(buf, 300, stdin);
 
-
+//Guarda en el apuntador lo que arroja la terminal
 fp = popen(buf, "r");
 
 	
@@ -127,7 +127,7 @@ else
 pclose(fp);
 
 
-
+//Guarda en una variable lo que tiene el arcvhivo
   FILE * stream;
   stream = fopen("comando.txt", "r");
   int count = fread(cadena, sizeof(char), 1000, stream);
@@ -135,7 +135,7 @@ pclose(fp);
   //Imprime
   printf(" %s \n", cadena);
   
-  
+ //Envia la cadena
 if(send(new_fd, cadena, strlen(cadena), 0)==-1)
 	printf("Error\n");
 else
@@ -147,7 +147,7 @@ else
 	
 
 
-
+//Cierra el socket
     close(new_fd);
     printf("Server-new socket, new_fd closed successfully...\n");
     

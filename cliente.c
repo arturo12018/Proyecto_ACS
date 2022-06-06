@@ -59,9 +59,14 @@ while(1){
   }
   else
   
+  //Verifica que esta conectado el servidor
     if(conectado==0)
     	printf("Client-The connect() is OK...\n\n");
     
+    
+//--------------------------------------------------
+//Envia el mensaje al servidor
+
     printf("> "), fgets(buf, MAXDATASIZE, stdin);
     
     
@@ -75,12 +80,15 @@ while(1){
     else{
     	  if(send(sockfd, buf, MAXDATASIZE, 0) == -1)
     		perror("Server-send() error lol!");
+    		
+    		
+//----------------------------------------------------
   	
     	
 //-----------------    
 
 
-    
+    //Recibe la cadena con la informacion 
     
     if((numbytes = recv(sockfd, buf, 1000-1, 0)) == -1){
     

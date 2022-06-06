@@ -34,14 +34,14 @@ while(1){
     perror("gethostbyname()");
     exit(1);
   }
-  else
+  //else
     //printf("Client-The remote host is: %s\n", argv[1]);
 
   if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
     perror("socket()");
     exit(1);
   }
-  else 
+  //else 
     //printf("Client-The socket() sockfd is OK...\n");
 
   // host byte order

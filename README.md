@@ -16,10 +16,7 @@ programado en lenguaje C.</li>
 Para poder hacer uso de este proyecto es necesario contar con una maquina con Python previamente instalado y un cualquier navegador compatible con javascript.
 # Autores 
   <ul>
-      <li>Calvo Reyes Brandon Rodolfo</li>
-      <li>Cortez Ibarra Derek		</li>
       <li>Munoz Garcia Arturo</li>
-      <li>Leyva Pérez José Luis</li>
   </ul>
   
  

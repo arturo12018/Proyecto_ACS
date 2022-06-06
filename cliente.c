@@ -57,7 +57,7 @@ while(1){
     perror("connect()");
     exit(1);
   }
-  else
+  
   
   //Verifica que esta conectado el servidor
     if(conectado==0)

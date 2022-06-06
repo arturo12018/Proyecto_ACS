@@ -101,7 +101,6 @@ FILE *pf;
 
 
 
-//fgets(buf, 300, stdin);
 
 //Guarda en el apuntador lo que arroja la terminal
 fp = popen(buf, "r");
